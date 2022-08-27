@@ -1,0 +1,7 @@
+# This is unique id for dfs seeder services.
+# This value is identical among all dfs seeder services
+service-group-id:
+
+# This is unique per every instance of every service.
+# It is used for purposes like logging etc.
+service-instance-id:
