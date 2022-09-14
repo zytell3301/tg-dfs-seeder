@@ -21,8 +21,10 @@ type Repository interface {
 	// responsibility to a target seed node. Mostly used when a
 	// fresh seed node wants to take responsibility
 	// of some dfs clients.
-	TransferServerResponsibility(serverId string, targetSNId string)
+	TransferServerResponsibility(serverId string, targetSNId string) error
 
 	// Gets a list of all client dfs servers.
 	GetAllClientDfsServers() []domain.Server
+
+	GetNodeClientDfsServers(serverId string) []domain.Server
 }

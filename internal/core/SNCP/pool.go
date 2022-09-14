@@ -1,6 +1,7 @@
 package SNCP
 
 import (
+	"errors"
 	"math"
 	"sort"
 )
@@ -66,4 +67,24 @@ func (p pool) Bootstrap() {
 		serverToRequest.ServersCount--
 		i++
 	}
+}
+
+// This method is used when another SN instance
+// requests for dfs client server to get reports from.
+// So we must give one of current node's client dfs
+// servers, to requesting node.
+func (p pool) AssignServerToOtherNode(destinationServer string) error {
+	// So at first step we fetch a list of all servers
+	// assigned to current node.
+	clientServers := p.repository.GetNodeClientDfsServers(p.currentInstanceId)
+	if len(clientServers) < 1 {
+		return errors.New("an error encountered while assigning a client dfs. No node assigned")
+	}
+
+	err := p.repository.TransferServerResponsibility(clientServers[0].InstanceId, destinationServer)
+	if err != nil {
+		return errors.New("an error encountered while transferring server responsibility")
+	}
+
+	return nil
 }
